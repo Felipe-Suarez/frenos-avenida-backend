@@ -60,9 +60,11 @@ route.get('/promotion', async (req, res) => {
 route.post('/', auth, async (req, res) => {
     const productData = req.body
 
-    const product = await serviceCreate(productData)
+    console.log(productData)
+    // const product = await serviceCreate(productData)
 
-    res.json(product)
+    res.end()
+    // res.json(product)
 })
 
 route.put('/updateOne', auth, async (req, res) => {
