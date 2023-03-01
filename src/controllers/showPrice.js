@@ -1,6 +1,8 @@
 import { Router } from 'express'
 const route = Router()
 
+import { auth } from '../middlewares/auth.js'
+
 import { serviceGet, serviceSet } from '../services/showPrice.js'
 
 route.get('/', async (req, res) => {
@@ -9,7 +11,7 @@ route.get('/', async (req, res) => {
     res.json(price)
 })
 
-route.post('/', async (req, res) => {
+route.post('/', auth, async (req, res) => {
     const { showPrice } = req.body
 
     const price = await serviceSet(showPrice)

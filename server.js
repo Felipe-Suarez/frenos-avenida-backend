@@ -13,5 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/', router)
 
+app.use('/public', express.static('assets/imgs'))
+
 const port = PORT || 8080
 app.listen(port, console.log(`Server on port: ${port}`))

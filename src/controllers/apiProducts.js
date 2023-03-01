@@ -2,6 +2,7 @@ import { Router } from 'express'
 const route = Router()
 
 import { auth } from '../middlewares/auth.js'
+import upload from '../middlewares/multer.js'
 
 import {
     serviceGetAll,
@@ -60,11 +61,13 @@ route.get('/promotion', async (req, res) => {
 route.post('/', auth, async (req, res) => {
     const productData = req.body
 
-    console.log(productData)
-    // const product = await serviceCreate(productData)
+    const product = await serviceCreate(productData)
 
+    res.json(product)
+})
+
+route.post('/image', auth, upload.single("image"), async (req, res) => {
     res.end()
-    // res.json(product)
 })
 
 route.put('/updateOne', auth, async (req, res) => {
