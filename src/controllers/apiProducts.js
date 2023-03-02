@@ -4,6 +4,8 @@ const route = Router()
 import { auth } from '../middlewares/auth.js'
 import upload from '../middlewares/multer.js'
 
+import fs from 'fs'
+
 import {
     serviceGetAll,
     serviceGetOne,
@@ -67,7 +69,7 @@ route.post('/', auth, async (req, res) => {
 })
 
 route.post('/image', auth, upload.single("image"), async (req, res) => {
-    res.end()
+    res.json(req.file.filename)
 })
 
 route.put('/updateOne', auth, async (req, res) => {
@@ -84,6 +86,14 @@ route.put('/update', auth, async (req, res) => {
     const product = await serviceUpdate(arr)
 
     res.json(product)
+})
+
+route.delete('/image', auth, async (req, res) => {
+    const { image } = req.body
+
+    fs.unlink(`assets/imgs/${image}`, err => console.log('Error al eliminar imagen'))
+
+    res.end()
 })
 
 route.delete('/', auth, async (req, res) => {
