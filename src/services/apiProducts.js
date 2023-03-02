@@ -1,5 +1,7 @@
 import { DaoProducts } from '../persistance/index.js'
 
+import fs from 'fs'
+
 export const serviceGetPublic = async () => await DaoProducts.getPublic()
 
 export const serviceGetAll = async () => await DaoProducts.getAll()
@@ -19,4 +21,11 @@ export const serviceUpdateOne = async (productId, productData) =>
 
 export const serviceUpdate = async arr => await DaoProducts.update(arr)
 
-export const serviceDelete = async productsId => await DaoProducts.delete(productsId)
+export const serviceDelete = async productsId => {
+    for (let i = 0; i < productsId.length; i++) {
+        const product = await DaoProducts.getOne(productsId[i])
+        const image = await product.data.image
+        fs.unlink(`assets/imgs/${image}`, err => console.log('Error al eliminar imagen'))
+    }
+    return DaoProducts.delete(productsId)
+}
