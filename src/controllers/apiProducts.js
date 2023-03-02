@@ -7,6 +7,7 @@ import upload from '../middlewares/multer.js'
 import fs from 'fs'
 
 import {
+    serviceGetPublic,
     serviceGetAll,
     serviceGetOne,
     serviceGetCategory,
@@ -19,7 +20,7 @@ import {
 } from '../services/apiProducts.js'
 
 route.get('/', async (req, res) => {
-    const products = await serviceGetAll()
+    const products = await serviceGetPublic()
 
     res.json(products)
 })
@@ -63,6 +64,16 @@ route.get('/promotion', async (req, res) => {
 route.post('/', auth, async (req, res) => {
     const productData = req.body
 
+    productData.public = true
+    const product = await serviceCreate(productData)
+
+    res.json(product)
+})
+
+route.post('/priv', auth, async (req, res) => {
+    const productData = req.body
+
+    productData.public = false
     const product = await serviceCreate(productData)
 
     res.json(product)
@@ -75,6 +86,16 @@ route.post('/image', auth, upload.single("image"), async (req, res) => {
 route.put('/updateOne', auth, async (req, res) => {
     const { productId, productData } = req.body
 
+    productData.public = true
+    const product = await serviceUpdateOne(productId, productData)
+
+    res.json(product)
+})
+
+route.put('/updateOne/priv', auth, async (req, res) => {
+    const { productId, productData } = req.body
+
+    productData.public = false
     const product = await serviceUpdateOne(productId, productData)
 
     res.json(product)

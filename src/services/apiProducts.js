@@ -1,5 +1,7 @@
 import { DaoProducts } from '../persistance/index.js'
 
+export const serviceGetPublic = async () => await DaoProducts.getPublic()
+
 export const serviceGetAll = async () => await DaoProducts.getAll()
 
 export const serviceGetOne = async productId => await DaoProducts.getOne(productId)

@@ -44,4 +44,16 @@ export default class FirebaseProducts extends ContainerFirebase {
             return data
         } catch (error) { console.log(error) }
     }
+
+    async getPublic() {
+        try {
+            const snapshotDocs = await this.collection.where('public', '==', true).get()
+            const docs = snapshotDocs.docs
+
+            const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
+            if (!data) throw new Error(`Error: data/${data}`)
+
+            return data
+        } catch (error) { console.log(error) }
+    }
 }
