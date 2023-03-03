@@ -8,6 +8,7 @@ import fs from 'fs'
 
 import {
     serviceGetPublic,
+    serviceGetPriv,
     serviceGetAll,
     serviceGetOne,
     serviceGetCategory,
@@ -21,6 +22,12 @@ import {
 
 route.get('/', async (req, res) => {
     const products = await serviceGetPublic()
+
+    res.json(products)
+})
+
+route.get('/admin/priv', auth, async (req, res) => {
+    const products = await serviceGetPriv()
 
     res.json(products)
 })
