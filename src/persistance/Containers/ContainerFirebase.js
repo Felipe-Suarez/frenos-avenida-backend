@@ -7,8 +7,9 @@ export default class ContainerFirebase {
 
     async getAll() {
         try {
-            const snapshotDocs = await this.collection.get()
-            const docs = snapshotDocs.docs
+            const snapshotDocs = this.collection.orderBy('date', 'desc')
+            const documents = await snapshotDocs.get()
+            const docs = documents.docs
 
             const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
             if (!data) throw new Error(`Error: data/${data}`)
@@ -49,6 +50,7 @@ export default class ContainerFirebase {
         try {
             if (!id || !obj) throw new Error(`Error: id/${id} | obj/${obj}`)
 
+            obj.date = new Date()
             const doc = this.collection.doc(id)
             await doc.update(obj)
 
