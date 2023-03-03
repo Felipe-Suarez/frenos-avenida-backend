@@ -2,19 +2,19 @@ import { DaoProducts } from '../persistance/index.js'
 
 import fs from 'fs'
 
-export const serviceGetPublic = async () => {
-    const data = await DaoProducts.getPublic(true)
+export const serviceGetPublic = async (limit) => {
+    const data = await DaoProducts.getPublic(true, limit)
     const orderData = [...data].sort((a, b) => b.data.date._seconds - a.data.date._seconds)
     return orderData
 }
 
-export const serviceGetPriv = async () => {
-    const data = await DaoProducts.getPublic(false)
+export const serviceGetPriv = async (limit) => {
+    const data = await DaoProducts.getPublic(false, limit)
     const orderData = [...data].sort((a, b) => b.data.date._seconds - a.data.date._seconds)
     return orderData
 }
 
-export const serviceGetAll = async () => await DaoProducts.getAll()
+export const serviceGetAll = async limit => await DaoProducts.getAll(limit)
 
 export const serviceGetOne = async productId => await DaoProducts.getOne(productId)
 

@@ -21,19 +21,22 @@ import {
 } from '../services/apiProducts.js'
 
 route.get('/', async (req, res) => {
-    const products = await serviceGetPublic()
+    const { limit } = req.query
+    const products = await serviceGetPublic(Number(limit))
 
     res.json(products)
 })
 
 route.get('/admin/priv', auth, async (req, res) => {
-    const products = await serviceGetPriv()
+    const { limit } = req.query
+    const products = await serviceGetPriv(Number(limit))
 
     res.json(products)
 })
 
 route.get('/admin', auth, async (req, res) => {
-    const products = await serviceGetAll()
+    const { limit } = req.query
+    const products = await serviceGetAll(Number(limit))
 
     res.json(products)
 })

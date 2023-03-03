@@ -45,10 +45,10 @@ export default class FirebaseProducts extends ContainerFirebase {
         } catch (error) { console.log(error) }
     }
 
-    async getPublic(type) {
+    async getPublic(type, limit) {
         try {
             const snapshotDocs = this.collection.where('public', '==', type)
-            const documents = await snapshotDocs.get()
+            const documents = await snapshotDocs.limit(limit).get()
             const docs = documents.docs
 
             const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))

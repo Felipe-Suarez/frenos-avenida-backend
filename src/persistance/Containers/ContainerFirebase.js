@@ -5,10 +5,10 @@ export default class ContainerFirebase {
         this.collection = db.collection(collection);
     }
 
-    async getAll() {
+    async getAll(limit) {
         try {
             const snapshotDocs = this.collection.orderBy('date', 'desc')
-            const documents = await snapshotDocs.get()
+            const documents = await snapshotDocs.limit(limit).get()
             const docs = documents.docs
 
             const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
