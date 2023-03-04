@@ -4,8 +4,6 @@ const route = Router()
 import { auth } from '../middlewares/auth.js'
 import upload from '../middlewares/multer.js'
 
-import fs from 'fs'
-
 import {
     serviceGetSizePublic,
     serviceGetSize,
@@ -16,12 +14,14 @@ import {
     serviceGetCategory,
     serviceGetTags,
     serviceGetPromotion,
+    serviceExistProduct,
     serviceCreate,
     serviceSearch,
     serviceSearchPublic,
     serviceUpdateOne,
     serviceUpdate,
-    serviceDelete
+    serviceDelete,
+    serviceDeleteImage
 } from '../services/apiProducts.js'
 
 route.get('/size', auth, async (req, res) => {
@@ -97,10 +97,16 @@ route.get('/promotion', async (req, res) => {
 route.post('/', auth, async (req, res) => {
     const productData = req.body
 
-    productData.public = true
-    const product = await serviceCreate(productData)
+    const existProduct = await serviceExistProduct(req.body.name)
 
-    res.json(product)
+    if (existProduct) {
+        serviceDeleteImage(req.body.image)
+        res.json({ error: `El Producto con nombre '${req.body.name}' ya existe` })
+    } else {
+        productData.public = true
+        const product = await serviceCreate(productData)
+        res.json(product)
+    }
 })
 
 route.post('/search', async (req, res) => {
@@ -169,7 +175,7 @@ route.put('/update', auth, async (req, res) => {
 route.delete('/image', auth, async (req, res) => {
     const { image } = req.body
 
-    fs.unlink(`assets/imgs/${image}`, err => console.log('Error al eliminar imagen'))
+    serviceDeleteImage(image)
 
     res.end()
 })

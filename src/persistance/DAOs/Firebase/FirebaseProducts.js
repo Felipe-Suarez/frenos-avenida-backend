@@ -76,6 +76,19 @@ export default class FirebaseProducts extends ContainerFirebase {
         } catch (error) { console.log(error) }
     }
 
+    async existProduct(name) {
+        try {
+            const snapshotDocs = this.collection.where('name', '==', name)
+            const documents = await snapshotDocs.get()
+            const docs = documents.docs
+
+            const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
+            if (!data) throw new Error(`Error: data/${data}`)
+
+            return data.length !== 0
+        } catch (error) { console.log(error) }
+    }
+
     async search(search) {
         try {
             const snapshotDocs = this.collection.where('name', '>=', search).where('name', '<=', search + '\uf8ff')
