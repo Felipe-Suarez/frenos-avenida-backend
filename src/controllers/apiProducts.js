@@ -7,6 +7,7 @@ import upload from '../middlewares/multer.js'
 import fs from 'fs'
 
 import {
+    serviceGetSize,
     serviceGetPublic,
     serviceGetPriv,
     serviceGetAll,
@@ -19,6 +20,12 @@ import {
     serviceUpdate,
     serviceDelete
 } from '../services/apiProducts.js'
+
+route.get('/size', auth, async (req, res) => {
+    const size = await serviceGetSize()
+
+    res.json(size)
+})
 
 route.get('/', async (req, res) => {
     const { limit, offset } = req.query

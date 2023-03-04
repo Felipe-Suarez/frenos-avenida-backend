@@ -5,6 +5,15 @@ export default class FirebaseProducts extends ContainerFirebase {
         super('products')
     }
 
+    async getSize() {
+        try {
+            const snapshotDocs = await this.collection.get()
+            const documents = snapshotDocs.size
+
+            return { documents }
+        } catch (error) { console.log(error) }
+    }
+
     async getCategory(category) {
         try {
             if (!category) throw new Error(`Error: category/${category}`)
