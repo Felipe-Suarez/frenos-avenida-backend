@@ -26,6 +26,10 @@ export const serviceGetTags = async tags => await DaoProducts.getByTags(tags)
 
 export const serviceGetPromotion = async () => await DaoProducts.getInPromotion()
 
+export const serviceSearch = async search => await DaoProducts.search(search)
+
+export const serviceSearchPublic = async (search, type) => await DaoProducts.searchPublic(search, type)
+
 export const serviceCreate = async productData => await DaoProducts.create(productData)
 
 export const serviceUpdateOne = async (productId, productData) =>

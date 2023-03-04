@@ -16,6 +16,8 @@ import {
     serviceGetTags,
     serviceGetPromotion,
     serviceCreate,
+    serviceSearch,
+    serviceSearchPublic,
     serviceUpdateOne,
     serviceUpdate,
     serviceDelete
@@ -29,6 +31,7 @@ route.get('/size', auth, async (req, res) => {
 
 route.get('/', async (req, res) => {
     const { limit, offset } = req.query
+
     const products = await serviceGetPublic(Number(limit), Number(offset))
 
     res.json(products)
@@ -85,6 +88,30 @@ route.post('/', auth, async (req, res) => {
     const product = await serviceCreate(productData)
 
     res.json(product)
+})
+
+route.post('/search', async (req, res) => {
+    const { search } = req.body
+
+    const products = await serviceSearchPublic(search, true)
+
+    res.json(products)
+})
+
+route.post('/search/admin/priv', auth, async (req, res) => {
+    const { search } = req.body
+
+    const products = await serviceSearchPublic(search, false)
+
+    res.json(products)
+})
+
+route.post('/search/admin', auth, async (req, res) => {
+    const { search } = req.body
+
+    const products = await serviceSearch(search)
+
+    res.json(products)
 })
 
 route.post('/priv', auth, async (req, res) => {

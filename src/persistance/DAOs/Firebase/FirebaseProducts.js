@@ -66,4 +66,31 @@ export default class FirebaseProducts extends ContainerFirebase {
             return data
         } catch (error) { console.log(error) }
     }
+
+    async search(search) {
+        try {
+            const snapshotDocs = this.collection.where('name', '>=', search).where('name', '<=', search + '\uf8ff')
+            const documents = await snapshotDocs.get()
+            const docs = documents.docs
+
+            const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
+            if (!data) throw new Error(`Error: data/${data}`)
+
+            return data
+        } catch (error) { console.log(error) }
+    }
+
+    async searchPublic(search, type) {
+        try {
+            const snapshotDocs = this.collection.where('name', '>=', search).where('name', '<=', search + '\uf8ff').where('public', '==', type)
+            const documents = await snapshotDocs.get()
+            const docs = documents.docs
+
+            const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
+            if (!data) throw new Error(`Error: data/${data}`)
+
+            return data
+        } catch (error) { console.log(error) }
+
+    }
 }
