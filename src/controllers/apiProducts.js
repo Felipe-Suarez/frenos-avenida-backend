@@ -7,6 +7,7 @@ import upload from '../middlewares/multer.js'
 import fs from 'fs'
 
 import {
+    serviceGetSizePublic,
     serviceGetSize,
     serviceGetPublic,
     serviceGetPriv,
@@ -24,6 +25,18 @@ import {
 } from '../services/apiProducts.js'
 
 route.get('/size', auth, async (req, res) => {
+    const size = await serviceGetSizePublic(true)
+
+    res.json(size)
+})
+
+route.get('/size/admin/priv', auth, async (req, res) => {
+    const size = await serviceGetSizePublic(false)
+
+    res.json(size)
+})
+
+route.get('/size/admin', auth, async (req, res) => {
     const size = await serviceGetSize()
 
     res.json(size)

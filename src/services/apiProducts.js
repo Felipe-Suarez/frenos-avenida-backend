@@ -2,6 +2,8 @@ import { DaoProducts } from '../persistance/index.js'
 
 import fs from 'fs'
 
+export const serviceGetSizePublic = async (type) => await DaoProducts.getSizePublic(type)
+
 export const serviceGetSize = async () => await DaoProducts.getSize()
 
 export const serviceGetPublic = async (limit, offset) => {
