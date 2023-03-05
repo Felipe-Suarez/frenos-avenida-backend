@@ -99,11 +99,11 @@ route.post('/', auth, async (req, res) => {
 
     const existProduct = await serviceExistProduct(req.body.name)
 
-    if (existProduct) {
+    if (existProduct.length > 0) {
         serviceDeleteImage(req.body.image)
-        res.json({ error: `El Producto con nombre '${req.body.name}' ya existe` })
+        res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
     } else {
-        productData.public = true
+        productData.public = req.query.type !== 'public'
         const product = await serviceCreate(productData)
         res.json(product)
     }
@@ -133,14 +133,6 @@ route.post('/search/admin', auth, async (req, res) => {
     res.json(products)
 })
 
-route.post('/priv', auth, async (req, res) => {
-    const productData = req.body
-
-    productData.public = false
-    const product = await serviceCreate(productData)
-
-    res.json(product)
-})
 
 route.post('/image', auth, upload.single("image"), async (req, res) => {
     res.json(req.file.filename)
@@ -149,19 +141,15 @@ route.post('/image', auth, upload.single("image"), async (req, res) => {
 route.put('/updateOne', auth, async (req, res) => {
     const { productId, productData } = req.body
 
-    productData.public = true
-    const product = await serviceUpdateOne(productId, productData)
+    const existProduct = await serviceExistProduct(productData.name)
 
-    res.json(product)
-})
-
-route.put('/updateOne/priv', auth, async (req, res) => {
-    const { productId, productData } = req.body
-
-    productData.public = false
-    const product = await serviceUpdateOne(productId, productData)
-
-    res.json(product)
+    if (existProduct.length === 1 && productId !== existProduct[0].id) {
+        res.json({ error: `Error: El Producto con nombre '${productData.name}' ya existe` })
+    } else {
+        productData.public = req.query.type !== 'public'
+        const product = await serviceUpdateOne(productId, productData)
+        res.json(product)
+    }
 })
 
 route.put('/update', auth, async (req, res) => {

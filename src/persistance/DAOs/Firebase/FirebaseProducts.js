@@ -85,7 +85,7 @@ export default class FirebaseProducts extends ContainerFirebase {
             const data = docs.map(doc => ({ id: doc.id, data: doc.data() }))
             if (!data) throw new Error(`Error: data/${data}`)
 
-            return data.length !== 0
+            return data
         } catch (error) { console.log(error) }
     }
 
