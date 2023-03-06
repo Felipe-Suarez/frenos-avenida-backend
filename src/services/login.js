@@ -7,7 +7,7 @@ import { TOKEN_SECRET } from '../../config/index.js'
 
 export const serviceLogin = async (email, password) => {
     const user = await DaoUsers.getByEmail(email)
-    if (!user) return { error: 'El usuario no existe' }
+    if (!user) return { error: 'Error: datos no validos' }
 
     else {
         const checkPass = await bcrypt.compare(password, user.data.password)
@@ -22,6 +22,6 @@ export const serviceLogin = async (email, password) => {
 
             return { token }
         }
-        else return { error: 'contraseña incorrecta' }
+        else return { error: 'Error: datos no validos' }
     }
 }

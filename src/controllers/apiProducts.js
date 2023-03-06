@@ -24,20 +24,23 @@ import {
     serviceDeleteImage
 } from '../services/apiProducts.js'
 
-route.get('/size', auth, async (req, res) => {
+route.get('/size', async (req, res) => {
     const size = await serviceGetSizePublic(true)
+    if (!size) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(size)
 })
 
 route.get('/size/admin/priv', auth, async (req, res) => {
     const size = await serviceGetSizePublic(false)
+    if (!size) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(size)
 })
 
 route.get('/size/admin', auth, async (req, res) => {
     const size = await serviceGetSize()
+    if (!size) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(size)
 })
@@ -46,6 +49,7 @@ route.get('/', async (req, res) => {
     const { limit, offset } = req.query
 
     const products = await serviceGetPublic(Number(limit), Number(offset))
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -53,6 +57,7 @@ route.get('/', async (req, res) => {
 route.get('/admin/priv', auth, async (req, res) => {
     const { limit, offset } = req.query
     const products = await serviceGetPriv(Number(limit), Number(offset))
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -60,6 +65,7 @@ route.get('/admin/priv', auth, async (req, res) => {
 route.get('/admin', auth, async (req, res) => {
     const { limit, offset } = req.query
     const products = await serviceGetAll(Number(limit), Number(offset))
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -68,6 +74,7 @@ route.get('/product/:productId', async (req, res) => {
     const productId = req.params.productId
 
     const product = await serviceGetOne(productId)
+    if (!product) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(product)
 })
@@ -76,6 +83,7 @@ route.get('/category/:category', async (req, res) => {
     const category = req.params.category
 
     const products = await serviceGetCategory(category)
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -84,12 +92,14 @@ route.get('/tags', async (req, res) => {
     const tags = req.query.tag
 
     const products = await serviceGetTags(tags)
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
 
 route.get('/promotion', async (req, res) => {
     const products = await serviceGetPromotion()
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -113,6 +123,7 @@ route.post('/search', async (req, res) => {
     const { search } = req.body
 
     const products = await serviceSearchPublic(search, true)
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -121,6 +132,7 @@ route.post('/search/admin/priv', auth, async (req, res) => {
     const { search } = req.body
 
     const products = await serviceSearchPublic(search, false)
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
@@ -129,13 +141,16 @@ route.post('/search/admin', auth, async (req, res) => {
     const { search } = req.body
 
     const products = await serviceSearch(search)
+    if (!products) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
 
 
 route.post('/image', auth, upload.single("image"), async (req, res) => {
-    res.json(req.file.filename)
+    const image = req.file.filename
+    if (!image) res.json({ error: 'Error: No se pudo guardar la imagen' })
+    res.json(image)
 })
 
 route.put('/updateOne', auth, async (req, res) => {
@@ -165,13 +180,15 @@ route.delete('/image', auth, async (req, res) => {
 
     serviceDeleteImage(image)
 
-    res.end()
+    if (!image) res.json({ error: 'No se pudo eliminar la imagen' })
+    res.json({ msg: 'Imagen eliminada exitosamente!' })
 })
 
 route.delete('/', auth, async (req, res) => {
     const { productsId } = req.body
 
     const product = await serviceDelete(productsId)
+    if (!product) res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(product)
 })

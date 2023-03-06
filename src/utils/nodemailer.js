@@ -28,7 +28,7 @@ const sendMail = async (data) => {
     try {
         await transporter.sendMail(emailContent);
     } catch (error) {
-        console.log(error)
+        return { error }
     }
 }
 
