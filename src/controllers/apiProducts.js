@@ -104,18 +104,35 @@ route.get('/promotion', async (req, res) => {
     res.json(products)
 })
 
+route.post('/existName', auth, async (req, res) => {
+    const existProduct = await serviceExistProduct(req.body.name)
+
+    if (existProduct.length > 0)
+        res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
+    else
+        res.json({ msg: true })
+})
+
 route.post('/', auth, async (req, res) => {
     const productData = req.body
 
-    const existProduct = await serviceExistProduct(req.body.name)
+    const testValues = Object.values(productData);
+    const verifyValues = testValues.map((item) => item.replace(/\s+/g, ""));
+    const areValid = verifyValues.every((item) => item !== "" && item.length >= 1);
 
-    if (existProduct.length > 0) {
-        serviceDeleteImage(req.body.image)
-        res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
+    if (areValid) {
+        const existProduct = await serviceExistProduct(req.body.name)
+
+        if (existProduct.length > 0) {
+            serviceDeleteImage(req.body.image)
+            res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
+        } else {
+            productData.public = req.query.type !== 'public'
+            const product = await serviceCreate(productData)
+            res.json(product)
+        }
     } else {
-        productData.public = req.query.type !== 'public'
-        const product = await serviceCreate(productData)
-        res.json(product)
+        res.json({ error: 'todos los campos tienen que estar llenos o con 1 caracter mínimo' })
     }
 })
 
@@ -153,17 +170,36 @@ route.post('/image', auth, upload.single("image"), async (req, res) => {
     res.json(image)
 })
 
+route.put('/existName', auth, async (req, res) => {
+    const { productId, name } = req.body
+
+    const existProduct = await serviceExistProduct(name)
+
+    if (existProduct.length === 1 && productId !== existProduct[0].id)
+        res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
+    else
+        res.json({ msg: true })
+})
+
 route.put('/updateOne', auth, async (req, res) => {
     const { productId, productData } = req.body
 
-    const existProduct = await serviceExistProduct(productData.name)
+    const testValues = Object.values(productData);
+    const verifyValues = testValues.map((item) => item.replace(/\s+/g, ""));
+    const areValid = verifyValues.every((item) => item !== "" && item.length >= 1);
 
-    if (existProduct.length === 1 && productId !== existProduct[0].id) {
-        res.json({ error: `Error: El Producto con nombre '${productData.name}' ya existe` })
+    if (areValid) {
+        const existProduct = await serviceExistProduct(productData.name)
+
+        if (existProduct.length === 1 && productId !== existProduct[0].id) {
+            res.json({ error: `Error: El Producto con nombre '${productData.name}' ya existe` })
+        } else {
+            productData.public = req.query.type !== 'public'
+            const product = await serviceUpdateOne(productId, productData)
+            res.json(product)
+        }
     } else {
-        productData.public = req.query.type !== 'public'
-        const product = await serviceUpdateOne(productId, productData)
-        res.json(product)
+        res.json({ error: 'todos los campos tienen que estar llenos o con 1 caracter mínimo' })
     }
 })
 

@@ -80,7 +80,7 @@ export default class ContainerFirebase {
                 await doc.delete()
             });
 
-            return { msg: 'Operacion exitosa' }
+            return { msg: 'Productos eliminados exitosamente!' }
 
         } catch (error) { console.log(error) }
     }
