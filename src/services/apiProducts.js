@@ -44,7 +44,7 @@ export const serviceUpdate = async arr => await DaoProducts.update(arr)
 export const serviceDelete = async productsId => {
     for (let i = 0; i < productsId.length; i++) {
         const product = await DaoProducts.getOne(productsId[i])
-        const image = await product.data.image
+        const image = await product?.data?.image
         deleteImage(image)
     }
     return DaoProducts.delete(productsId)

@@ -82,6 +82,6 @@ export default class ContainerFirebase {
 
             return { msg: 'Productos eliminados exitosamente!' }
 
-        } catch (error) { console.log(error) }
+        } catch (error) { return { msg: 'El producto no existe!' } }
     }
 }

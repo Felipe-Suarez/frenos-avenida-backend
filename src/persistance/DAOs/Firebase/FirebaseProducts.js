@@ -91,7 +91,7 @@ export default class FirebaseProducts extends ContainerFirebase {
 
     async search(search) {
         try {
-            const snapshotDocs = this.collection.where('name', '>=', search).where('name', '<=', search + '\uf8ff')
+            const snapshotDocs = this.collection.where('name', '>=', search.toLowerCase()).where('name', '<=', search.toLowerCase() + '\uf8ff')
             const documents = await snapshotDocs.get()
             const docs = documents.docs
 
@@ -104,7 +104,7 @@ export default class FirebaseProducts extends ContainerFirebase {
 
     async searchPublic(search, type) {
         try {
-            const snapshotDocs = this.collection.where('name', '>=', search).where('name', '<=', search + '\uf8ff').where('public', '==', type)
+            const snapshotDocs = this.collection.where('name', '>=', search.toLowerCase()).where('name', '<=', search.toLowerCase() + '\uf8ff').where('public', '==', type)
             const documents = await snapshotDocs.get()
             const docs = documents.docs
 

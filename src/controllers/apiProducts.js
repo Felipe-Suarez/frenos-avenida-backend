@@ -128,6 +128,7 @@ route.post('/', auth, async (req, res) => {
             res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
         } else {
             productData.public = req.query.type !== 'public'
+            productData.name = productData.name.toLowerCase()
             const product = await serviceCreate(productData)
             res.json(product)
         }
@@ -165,7 +166,7 @@ route.post('/search/admin', auth, async (req, res) => {
 
 
 route.post('/image', auth, upload.single("image"), async (req, res) => {
-    const image = req.file.filename
+    const image = req?.file?.filename
     if (!image) res.json({ error: 'Error: No se pudo guardar la imagen' })
     res.json(image)
 })
