@@ -14,6 +14,7 @@ import {
     serviceGetCategory,
     serviceGetTags,
     serviceGetPromotion,
+    serviceImportExcel,
     serviceExistProduct,
     serviceCreate,
     serviceSearch,
@@ -104,13 +105,24 @@ route.get('/promotion', async (req, res) => {
     res.json(products)
 })
 
+route.post('/importExcel', auth, async (req, res) => {
+    const { file } = req.body
+
+    if (file.length === 0 || !file) {
+        res.json({ error: 'Error: datos no validos' })
+    } else {
+        const response = await serviceImportExcel(file)
+        res.json(response)
+    }
+})
+
 route.post('/existName', auth, async (req, res) => {
     const existProduct = await serviceExistProduct(req.body.name)
 
     if (existProduct.length > 0)
         res.json({ error: `Error: El Producto con nombre '${req.body.name}' ya existe` })
     else
-        res.json({ msg: true })
+        res.json({ msg: 'El nombre se puede utilizar' })
 })
 
 route.post('/', auth, async (req, res) => {

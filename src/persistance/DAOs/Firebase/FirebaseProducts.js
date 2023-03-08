@@ -113,6 +113,16 @@ export default class FirebaseProducts extends ContainerFirebase {
 
             return data
         } catch (error) { console.log(error) }
+    }
 
+    async importMultiple(file) {
+        try {
+            file.forEach(product => {
+                product.date = new Date()
+                product.public = false
+                this.collection.add(product)
+            })
+            return { msg: 'Productos agregados exitosamente' }
+        } catch (error) { return { error: 'No se pudieron agregar los productos' } }
     }
 }

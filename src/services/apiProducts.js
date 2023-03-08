@@ -32,7 +32,9 @@ export const serviceSearch = async search => await DaoProducts.search(search)
 
 export const serviceSearchPublic = async (search, type) => await DaoProducts.searchPublic(search, type)
 
-export const serviceExistProduct = async name => await DaoProducts.existProduct(name)
+export const serviceImportExcel = async file => await DaoProducts.importMultiple(file)
+
+export const serviceExistProduct = async name => await DaoProducts.existProduct(name.toLowerCase())
 
 export const serviceCreate = async productData => await DaoProducts.create(productData)
 
