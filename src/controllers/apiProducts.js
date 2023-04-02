@@ -108,7 +108,7 @@ route.get('/promotion', async (req, res) => {
 route.post('/importExcel', auth, async (req, res) => {
     const { file } = req.body
 
-    if (file.length === 0 || !file) {
+    if (!file || file.length === 0) {
         res.json({ error: 'Error: datos no validos' })
     } else {
         const response = await serviceImportExcel(file)

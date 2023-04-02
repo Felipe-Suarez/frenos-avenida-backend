@@ -21,14 +21,14 @@ const sendMail = async (data) => {
                     <li>Nombre: ${data.name}</li>
                     <li>Email: ${data.mail}</li>
                 </ul>
-                <p>${data.message}</p>
+                <p>MENSAJE: ${data.message}</p>
             `,
     };
-
+    console.log(emailContent)
     try {
         await transporter.sendMail(emailContent);
     } catch (error) {
-        return { error }
+        return { error: 'Hubo un error inesperado' }
     }
 }
 
