@@ -1,19 +1,29 @@
-import express from 'express'
-import router from './src/router.js'
+import express from 'express';
+import router from './src/router.js';
+import { PORT } from './config/index.js';
 
-import cors from 'cors'
+const app = express();
 
-import { PORT } from './config/index.js'
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://battelinifrenos.com.ar');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-const app = express()
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
 
-app.use(cors({ origin: 'https://battelinifrenos.com.ar' }))
+    next();
+});
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use('/', router)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/', router);
 
-app.use('/public', express.static('assets/imgs'))
+app.use('/public', express.static('assets/imgs'));
 
-const port = PORT || 3030
-app.listen(port, console.log(`Server on port: ${port}`))
+const port = PORT || 3030;
+app.listen(port, () => {
+    console.log(`Server on port: ${port}`);
+});

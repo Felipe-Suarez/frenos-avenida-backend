@@ -15,7 +15,7 @@ route.post('/', auth, async (req, res) => {
     const { showPrice } = req.body
 
     const price = await serviceSet(showPrice)
-    if (!price) res.json({ error: 'Error al actualizar el estado del precio' })
+    if (!price) return res.json({ error: 'Error al actualizar el estado del precio' })
 
     res.json(price)
 })
