@@ -9,7 +9,7 @@ import mail from './controllers/mail.js';
 import showPrice from './controllers/showPrice.js';
 
 const corsOptions = {
-    origin: ['https://battelinifrenos.com.ar', 'https://admin.battelinifrenos.com.ar'], // Permitir solicitudes desde ambos dominios
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
@@ -25,8 +25,6 @@ router
     .use('/showPrice', cors(corsOptions), showPrice);
 
 export default router;
-
-
 
 /*import { Router } from 'express'
 const router = Router()

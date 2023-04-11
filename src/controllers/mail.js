@@ -12,7 +12,10 @@ route.post('/', async (req, res) => {
 
     if (areValid) {
         const send = await sendMail(data)
-        if (send?.error) res.status(404).json({ error: 'En este momento no se pueden enviar correos' })
+        if (send?.error) {
+            res.status(404).json({ error: 'En este momento no se pueden enviar correos' })
+            return
+        }
         res.status(200).json({ msg: 'Mensaje enviado' })
     } else {
         res.json({ error: 'Campos no validos' })
