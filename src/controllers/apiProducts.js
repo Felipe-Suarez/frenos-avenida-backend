@@ -25,6 +25,8 @@ import {
     serviceDeleteImage
 } from '../services/apiProducts.js'
 
+import { serviceGet } from '../services/categories.js'
+
 route.get('/size', async (req, res) => {
     const size = await serviceGetSizePublic(true)
     if (!size) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
@@ -103,6 +105,10 @@ route.get('/promotion', async (req, res) => {
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
+})
+
+route.get('/categoryNames', async (req, res) => {
+    res.json(await serviceGet())
 })
 
 route.post('/importExcel', auth, async (req, res) => {
