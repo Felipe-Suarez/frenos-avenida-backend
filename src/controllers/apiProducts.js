@@ -51,7 +51,8 @@ route.get('/size/admin', auth, async (req, res) => {
 route.get('/', async (req, res) => {
     const { limit, offset, category } = req.query
 
-    const products = await serviceGetPublic(Number(limit), Number(offset), category.toUpperCase())
+    const categoryQuery = category ? category.toUpperCase() : null
+    const products = await serviceGetPublic(Number(limit), Number(offset), categoryQuery)
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
@@ -59,7 +60,9 @@ route.get('/', async (req, res) => {
 
 route.get('/admin/priv', auth, async (req, res) => {
     const { limit, offset, category } = req.query
-    const products = await serviceGetPriv(Number(limit), Number(offset), category.toUpperCase())
+
+    const categoryQuery = category ? category.toUpperCase() : null
+    const products = await serviceGetPriv(Number(limit), Number(offset), categoryQuery)
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
@@ -67,7 +70,9 @@ route.get('/admin/priv', auth, async (req, res) => {
 
 route.get('/admin', async (req, res) => {
     const { limit, offset, category } = req.query
-    const products = await serviceGetAll(Number(limit), Number(offset), category.toUpperCase())
+
+    const categoryQuery = category ? category.toUpperCase() : null
+    const products = await serviceGetAll(Number(limit), Number(offset), categoryQuery)
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
@@ -85,7 +90,7 @@ route.get('/product/:productId', async (req, res) => {
 route.get('/category/:category', async (req, res) => {
     const category = req.params.category
 
-    const products = await serviceGetCategory(category)
+    const products = await serviceGetCategory(category ? category.toUpperCase() : category)
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
