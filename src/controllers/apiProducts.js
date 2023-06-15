@@ -47,25 +47,25 @@ route.get('/size/admin', auth, async (req, res) => {
 })
 
 route.get('/', async (req, res) => {
-    const { limit, offset } = req.query
+    const { limit, offset, category } = req.query
 
-    const products = await serviceGetPublic(Number(limit), Number(offset))
+    const products = await serviceGetPublic(Number(limit), Number(offset), category.toUpperCase())
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
 
 route.get('/admin/priv', auth, async (req, res) => {
-    const { limit, offset } = req.query
-    const products = await serviceGetPriv(Number(limit), Number(offset))
+    const { limit, offset, category } = req.query
+    const products = await serviceGetPriv(Number(limit), Number(offset), category.toUpperCase())
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)
 })
 
-route.get('/admin', auth, async (req, res) => {
-    const { limit, offset } = req.query
-    const products = await serviceGetAll(Number(limit), Number(offset))
+route.get('/admin', async (req, res) => {
+    const { limit, offset, category } = req.query
+    const products = await serviceGetAll(Number(limit), Number(offset), category.toUpperCase())
     if (!products) return res.json({ error: 'Error: ha ocurrido un error inesperado' })
 
     res.json(products)

@@ -6,19 +6,19 @@ export const serviceGetSizePublic = async (type) => await DaoProducts.getSizePub
 
 export const serviceGetSize = async () => await DaoProducts.getSize()
 
-export const serviceGetPublic = async (limit, offset) => {
-    const data = await DaoProducts.getPublic(true, limit, offset)
+export const serviceGetPublic = async (limit, offset, category) => {
+    const data = await DaoProducts.getPublic(true, limit, offset, category)
     const orderData = [...data].sort((a, b) => b.data.date._seconds - a.data.date._seconds)
     return orderData
 }
 
-export const serviceGetPriv = async (limit, offset) => {
-    const data = await DaoProducts.getPublic(false, limit, offset)
+export const serviceGetPriv = async (limit, offset, category) => {
+    const data = await DaoProducts.getPublic(false, limit, offset, category)
     const orderData = [...data].sort((a, b) => b.data.date._seconds - a.data.date._seconds)
     return orderData
 }
 
-export const serviceGetAll = async (limit, offset) => await DaoProducts.getAll(limit, offset)
+export const serviceGetAll = async (limit, offset, category) => await DaoProducts.getAll(limit, offset, category)
 
 export const serviceGetOne = async productId => await DaoProducts.getOne(productId)
 

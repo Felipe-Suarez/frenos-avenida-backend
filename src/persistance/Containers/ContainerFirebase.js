@@ -5,9 +5,14 @@ export default class ContainerFirebase {
         this.collection = db.collection(collection);
     }
 
-    async getAll(limit, offset) {
+    async getAll(limit, offset, category) {
         try {
-            const snapshotDocs = this.collection.orderBy('date', 'desc')
+            let snapshotDocs;
+            if (category) {
+                snapshotDocs = this.collection.where('category', '==', category)
+            } else {
+                snapshotDocs = this.collection.orderBy('date', 'desc')
+            }
             const documents = await snapshotDocs.limit(limit).offset(offset).get()
             const docs = documents.docs
 
