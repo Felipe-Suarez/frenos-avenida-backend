@@ -6,7 +6,7 @@ export default class FirebaseCategories extends ContainerFirebase {
     }
 
     async getNames() {
-        const snapshotDocs = await this.collection.get()
+        const snapshotDocs = await this.collection.orderBy('date', 'asc').get()
         const docs = snapshotDocs.docs
 
         const data = docs.map(doc => (doc.data().name))
