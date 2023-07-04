@@ -25,7 +25,7 @@ import {
     serviceDeleteImage
 } from '../services/apiProducts.js'
 
-import { serviceGet } from '../services/categories.js'
+import { serviceGet, serviceCreate as createCategory } from '../services/categories.js'
 
 route.get('/size', async (req, res) => {
     const size = await serviceGetSizePublic(true)
@@ -115,6 +115,10 @@ route.get('/promotion', async (req, res) => {
 route.get('/categoryNames', async (req, res) => {
     res.json(await serviceGet())
 })
+
+// route.post('/createCategory', async (req, res) => {
+//     res.json(await createCategory(req.body))
+// })
 
 route.post('/importExcel', auth, async (req, res) => {
     const { file } = req.body
